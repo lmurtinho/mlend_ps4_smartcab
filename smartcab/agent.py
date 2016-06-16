@@ -22,7 +22,7 @@ class LearningAgent(Agent):
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
 
-        # The next best move is given by the planner
+        # Do something random
         action = random.choice([None, 'forward', 'left', 'right'])
         
         # Execute action and get reward
