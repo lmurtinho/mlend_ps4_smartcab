@@ -10,27 +10,59 @@ class LearningAgent(Agent):
         super(LearningAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
         self.color = 'red'  # override color
         self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
-        # TODO: Initialize any additional variables here
+        self.qvals = {}
+        self.time = 0
+        self.possible_actions = (None, 'forward', 'left', 'right')
+        self.negative_rewards = 0
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
         # TODO: Prepare for a new trip; reset any variables here, if required
+
+    def best_action(self, state):
+        """
+        Returns the best action (the one with the maximum Q-value)
+        or one of the best actions, given a state.
+        """
+        # get all possible q-values for the state 
+        all_qvals = {action: self.qvals.get((state, action), 0)
+                     for action in self.possible_actions}        
+        
+        # pick the actions that yield the largest q-value for the state
+        best_actions = [action for action in self.possible_actions 
+                        if all_qvals[action] == max(all_qvals.values())]
+        
+        # return one of the best actions at random
+        return random.choice(best_actions)        
 
     def update(self, t):
         # Gather inputs
         self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
+        
+        # update time and learning rate
+        self.time += 1
+        learn_rate = 1.0 / self.time
 
-        # update state
+        # Update state
         self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
                       self.next_waypoint)
 
-        # Do something random
-        action = random.choice([None, 'forward', 'left', 'right'])
+        # Pick the best known action
+        action = self.best_action(self.state)
         
         # Execute action and get reward
         reward = self.env.act(self, action)
+        
+        if reward < 0:
+            self.negative_rewards += 1
+        
+        # Update the q-value of the (state, action) pair
+        self.qvals[(self.state, action)] = \
+            (1 - learn_rate) * self.qvals.get((self.state, action), 0) + \
+            learn_rate * reward
+            
 
         print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
