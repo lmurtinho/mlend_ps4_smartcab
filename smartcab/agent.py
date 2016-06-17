@@ -22,6 +22,10 @@ class LearningAgent(Agent):
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
 
+        # update state
+        self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
+                      self.next_waypoint)
+
         # Do something random
         action = random.choice([None, 'forward', 'left', 'right'])
         
