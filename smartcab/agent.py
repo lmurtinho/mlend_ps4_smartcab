@@ -1,3 +1,4 @@
+import pandas as pd
 import random
 from environment import Agent, Environment
 from planner import RoutePlanner
@@ -13,7 +14,13 @@ class LearningAgent(Agent):
         self.qvals = {}
         self.time = 0
         self.possible_actions = (None, 'forward', 'left', 'right')
-        self.negative_rewards = 0
+        self.reward_sum = 0
+        self.disc_reward_sum = 0
+        self.n_dest_reached = 0
+        self.last_dest_fail = 0
+        self.sum_time_left = 0
+        self.n_penalties = 0
+        self.last_penalty = 0
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
@@ -54,9 +61,10 @@ class LearningAgent(Agent):
         
         # Execute action and get reward
         reward = self.env.act(self, action)
-        
         if reward < 0:
-            self.negative_rewards += 1
+            self.n_penalties += 1
+        self.reward_sum += reward
+        self.disc_reward_sum += reward / (self.time/10.0)
         
         # Update the q-value of the (state, action) pair
         self.qvals[(self.state, action)] = \
@@ -64,7 +72,7 @@ class LearningAgent(Agent):
             learn_rate * reward
             
 
-       # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
 
 def run():
@@ -80,9 +88,18 @@ def run():
     sim = Simulator(e, update_delay=0, display=False)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
-    sim.run(n_trials=100)  # run for a specified number of trials
+    return sim.run(n_trials=100)  # run for a specified number of trials
     # NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
 
 
 if __name__ == '__main__':
-    run()
+    results = []
+    for i in range(100):
+        sim_results = run()
+        results.append(run())
+    df_results = pd.DataFrame(results)
+    df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
+                          'last_dest_fail', 'sum_time_left', 'n_penalties',
+                          'last_penalty']
+    df_results.to_csv('original_agent_results.csv')
+    print df_results

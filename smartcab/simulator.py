@@ -54,19 +54,20 @@ class Simulator(object):
                 self.paused = False
             except ImportError as e:
                 self.display = False
-                print "Simulator.__init__(): Unable to import pygame; display disabled.\n{}: {}".format(e.__class__.__name__, e)
+                #print "Simulator.__init__(): Unable to import pygame; display disabled.\n{}: {}".format(e.__class__.__name__, e)
             except Exception as e:
                 self.display = False
-                print "Simulator.__init__(): Error initializing GUI objects; display disabled.\n{}: {}".format(e.__class__.__name__, e)
+               # print "Simulator.__init__(): Error initializing GUI objects; display disabled.\n{}: {}".format(e.__class__.__name__, e)
 
     def run(self, n_trials=1):
         self.quit = False
         for trial in xrange(n_trials):
-            print "Simulator.run(): Trial {}".format(trial)  # [debug]
+            # print "Simulator.run(): Trial {}".format(trial)  # [debug]
             self.env.reset()
             self.current_time = 0.0
             self.last_updated = 0.0
             self.start_time = time.time()
+            prev_penalty = self.env.primary_agent.n_penalties
             while True:
                 try:
                     # Update current time
@@ -100,10 +101,20 @@ class Simulator(object):
                     self.quit = True
                 finally:
                     if self.quit or self.env.done:
+                        state = self.env.agent_states[self.env.primary_agent]                        
+                        if state['location'] != state['destination']:
+                            self.env.primary_agent.last_dest_fail = trial + 1
+                        if self.env.primary_agent.n_penalties > prev_penalty:
+                            self.env.primary_agent.last_penalty = trial + 1
                         break
-
+            
+            p_agent = self.env.primary_agent
             if self.quit:
                 break
+        return (p_agent.reward_sum, p_agent.disc_reward_sum, 
+                p_agent.n_dest_reached, p_agent.last_dest_fail, 
+                p_agent.sum_time_left, p_agent.n_penalties,
+                p_agent.last_penalty)
 
     def render(self):
         # Clear screen
@@ -161,7 +172,7 @@ class Simulator(object):
         pause_text = "[PAUSED] Press any key to continue..."
         self.screen.blit(self.font.render(pause_text, True, self.colors['cyan'], self.bg_color), (100, self.height - 40))
         self.pygame.display.flip()
-        print pause_text  # [debug]
+        #print pause_text  # [debug]
         while self.paused:
             for event in self.pygame.event.get():
                 if event.type == self.pygame.KEYDOWN:
