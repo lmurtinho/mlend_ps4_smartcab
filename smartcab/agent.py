@@ -32,7 +32,8 @@ class LearningAgent(Agent):
         or one of the best actions, given a state.
         """        
         # get all possible q-values for the state
-        all_qvals = {action: self.qvals.get((state, action), 0)
+        # (be optimistic in the face of uncertainty)
+        all_qvals = {action: self.qvals.get((state, action), 5)
                      for action in self.possible_actions}        
         
         # pick the actions that yield the largest q-value for the state
@@ -68,7 +69,7 @@ class LearningAgent(Agent):
         
         # Update the q-value of the (state, action) pair
         self.qvals[(self.state, action)] = \
-            (1 - learn_rate) * self.qvals.get((self.state, action), 0) + \
+            (1 - learn_rate) * self.qvals.get((self.state, action), 5) + \
             learn_rate * reward
             
 
@@ -101,5 +102,5 @@ if __name__ == '__main__':
     df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
                           'last_dest_fail', 'sum_time_left', 'n_penalties',
                           'last_penalty']
-    df_results.to_csv('original_agent_results.csv')
+    df_results.to_csv('optimistic_agent_results.csv')
     print df_results
