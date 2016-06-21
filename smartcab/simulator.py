@@ -111,7 +111,6 @@ class Simulator(object):
             p_agent = self.env.primary_agent
             if self.quit:
                 break
-        #print p_agent.qvals
         return (p_agent.reward_sum, p_agent.disc_reward_sum, 
                 p_agent.n_dest_reached, p_agent.last_dest_fail, 
                 p_agent.sum_time_left, p_agent.n_penalties,
