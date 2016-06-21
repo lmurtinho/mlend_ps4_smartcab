@@ -114,7 +114,7 @@ class Simulator(object):
         return (p_agent.reward_sum, p_agent.disc_reward_sum, 
                 p_agent.n_dest_reached, p_agent.last_dest_fail, 
                 p_agent.sum_time_left, p_agent.n_penalties,
-                p_agent.last_penalty)
+                p_agent.last_penalty, len(p_agent.qvals))
 
     def render(self):
         # Clear screen
