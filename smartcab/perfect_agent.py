@@ -44,7 +44,7 @@ class LearningAgent(Agent):
         # - no traffic from the left is going forward
         if inputs['light'] == 'red':
             if (action != 'right') or (inputs['oncoming'] == 'left') \
-            or (inputs['left'] == 'forward'):
+            or (inputs['oncoming'] == 'right') or (inputs['left'] == 'forward'):
                 action = None
 
         # On a green light, the agent cannot turn left if there is
