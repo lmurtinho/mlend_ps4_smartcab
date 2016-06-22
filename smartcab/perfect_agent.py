@@ -26,30 +26,6 @@ class LearningAgent(Agent):
         self.planner.route_to(destination)
         # TODO: Prepare for a new trip; reset any variables here, if required
 
-    def best_action(self, state):
-        """
-        Returns the best action (the one with the maximum Q-value)
-        or one of the best actions, given a state.
-        """
-        
-        # if an action has not been performed, go for it
-        unperformed_actions = [action for action in self.possible_actions
-                               if (state, action) not in self.qvals.keys()]
-
-        if unperformed_actions:
-            return random.choice(unperformed_actions)
-            
-        # get all possible q-values for the state
-        all_qvals = {action: self.qvals.get((state, action), 0)
-                     for action in self.possible_actions}        
-        
-        # pick the actions that yield the largest q-value for the state
-        best_actions = [action for action in self.possible_actions 
-                        if all_qvals[action] == max(all_qvals.values())]
-        
-        # return one of the best actions at random
-        return random.choice(best_actions)        
-
     def update(self, t):
         # Gather inputs
         self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
@@ -59,18 +35,32 @@ class LearningAgent(Agent):
         # update time and learning rate
         self.time += 1
         learn_rate = 1.0 / self.time
+        
+        # retrieve best action        
+        action = self.next_waypoint
+
+        # On a red light, the agent can only turn right, and even so only if:
+        # - no oncoming traffic is going left
+        # - no traffic from the left is going forward
+        if inputs['light'] == 'red':
+            if (action != 'right') or (inputs['oncoming'] == 'left') \
+            or (inputs['left'] == 'forward'):
+                action = None
+
+        # On a green light, the agent cannot turn left if there is
+        # oncoming traffic going forward
+        elif inputs['oncoming'] == 'forward' and action == 'left':
+            action = None
 
         # Update state
         self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
                       self.next_waypoint)
 
-        # Pick the best known action
-        action = self.best_action(self.state)
-        
         # Execute action and get reward
         reward = self.env.act(self, action)
         if reward < 0:
             self.n_penalties += 1
+            print self.state, action
         self.reward_sum += reward
         self.disc_reward_sum += reward / (self.time/10.0)
         
@@ -109,5 +99,5 @@ if __name__ == '__main__':
     df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
                           'last_dest_fail', 'sum_time_left', 'n_penalties',
                           'last_penalty', 'len_qvals']
-    df_results.to_csv('exploration_agent_results.csv')
+    df_results.to_csv('perfect_agent_results.csv')
     print df_results
