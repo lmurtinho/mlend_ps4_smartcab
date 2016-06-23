@@ -172,12 +172,12 @@ class Environment(object):
             if light != 'green':
                 move_okay = False
         elif action == 'left':
-            if light == 'green' and sense['oncoming'] != 'forward':
+            if light == 'green' and (sense['oncoming'] == None or sense['oncoming'] == 'left'):
                 heading = (heading[1], -heading[0])
             else:
                 move_okay = False
         elif action == 'right':
-            if light == 'green' and (sense['oncoming'] == None or sense['oncoming'] == 'left'):
+            if light == 'green' or (sense['oncoming'] != 'left' and sense['oncoming'] != 'straight'):
                 heading = (-heading[1], heading[0])
             else:
                 move_okay = False

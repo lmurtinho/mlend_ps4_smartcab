@@ -1,74 +1,35 @@
 import pandas as pd
-import random
-from environment import Agent, Environment
-from planner import RoutePlanner
+from environment import Environment
 from simulator import Simulator
+from basic_agent import BasicAgent
 
-class LearningAgent(Agent):
+class PerfectAgent(BasicAgent):
     """An agent that learns to drive in the smartcab world."""
 
-    def __init__(self, env):
-        super(LearningAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
-        self.color = 'red'  # override color
-        self.planner = RoutePlanner(self.env, self)  # simple route planner to get next_waypoint
-        self.qvals = {}
-        self.time = 0
-        self.possible_actions = (None, 'forward', 'left', 'right')
-        self.reward_sum = 0
-        self.disc_reward_sum = 0
-        self.n_dest_reached = 0
-        self.last_dest_fail = 0
-        self.sum_time_left = 0
-        self.n_penalties = 0
-        self.last_penalty = 0
+    def best_action(self, state):
+        """
+        Returns the best possible action.
+        """        
+        # retrieve state information
+        light, oncoming, left, waypoint = state
 
-    def reset(self, destination=None):
-        self.planner.route_to(destination)
-        # TODO: Prepare for a new trip; reset any variables here, if required
-
-    def update(self, t):
-        # Gather inputs
-        self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
-        inputs = self.env.sense(self)
-        deadline = self.env.get_deadline(self)
-        
-        # update time and learning rate
-        self.time += 1
-        learn_rate = 1.0 / self.time
-        
         # retrieve best action        
-        action = self.next_waypoint
+        action = waypoint
 
         # On a red light, the agent can only turn right, and even so only if:
         # - no oncoming traffic is going left
         # - no traffic from the left is going forward
-        if inputs['light'] == 'red':
-            if (action != 'right') or (inputs['oncoming'] == 'left') \
-            or (inputs['oncoming'] == 'forward') or (inputs['left'] == 'forward'):
+        if light == 'red':
+            if (action != 'right') or (oncoming == 'left') \
+            or (oncoming == 'forward') or (oncoming == 'forward'):
                 action = None
 
         # On a green light, the agent cannot turn left if there is
-        # oncoming traffic going forward
-        elif inputs['oncoming'] == 'forward' and action == 'left':
+        # oncoming traffic going forward or right
+        elif action == 'left' and (oncoming == 'forward' or oncoming == 'right'):
             action = None
-
-        # Update state
-        self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
-                      self.next_waypoint)
-
-        # Execute action and get reward
-        reward = self.env.act(self, action)
-        if reward < 0:
-            self.n_penalties += 1
-            print self.state, action
-        self.reward_sum += reward
-        self.disc_reward_sum += reward / (self.time/10.0)
         
-        # Update the q-value of the (state, action) pair
-        self.qvals[(self.state, action)] = \
-            (1 - learn_rate) * self.qvals.get((self.state, action), 0) + \
-            learn_rate * reward
-            
+        return action            
 
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
@@ -78,7 +39,7 @@ def run():
 
     # Set up environment and agent
     e = Environment()  # create environment (also adds some dummy traffic)
-    a = e.create_agent(LearningAgent)  # create agent
+    a = e.create_agent(PerfectAgent)  # create agent
     e.set_primary_agent(a, enforce_deadline=True)  # specify agent to track
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
@@ -100,4 +61,4 @@ if __name__ == '__main__':
                           'last_dest_fail', 'sum_time_left', 'n_penalties',
                           'last_penalty', 'len_qvals']
     df_results.to_csv('perfect_agent_results.csv')
-    print df_results
+    # print df_results
