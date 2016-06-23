@@ -4,7 +4,7 @@ from simulator import Simulator
 from basic_agent import BasicAgent
 
 class PerfectAgent(BasicAgent):
-    """An agent that learns to drive in the smartcab world."""
+    """A perfect agent that knows how to drive in the smartcab world."""
 
     def best_action(self, state):
         """
@@ -20,8 +20,8 @@ class PerfectAgent(BasicAgent):
         # - no oncoming traffic is going left
         # - no traffic from the left is going forward
         if light == 'red':
-            if (action != 'right') or (oncoming == 'left') \
-            or (oncoming == 'forward') or (oncoming == 'forward'):
+            if any([action != 'right', oncoming == 'left', 
+                    left == 'forward']):
                 action = None
 
         # On a green light, the agent cannot turn left if there is

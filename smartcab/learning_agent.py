@@ -27,9 +27,12 @@ class LearningAgent(BasicAgent):
         """
         Updates the q-value associated with the (state, action) pair
         """
+        # define the learning rate for the current time
+        learn_rate = 1.0 / self.time
+        
         self.qvals[(self.state, action)] = \
-            (1 - self.learn_rate) * self.qvals.get((self.state, action), 0) + \
-            self.learn_rate * reward
+            (1 - learn_rate) * self.qvals.get((self.state, action), 0) + \
+            learn_rate * reward
 
 def run():
     """Run the agent for a finite number of trials."""

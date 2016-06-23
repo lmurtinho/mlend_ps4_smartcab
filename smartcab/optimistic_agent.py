@@ -10,7 +10,8 @@ class OptimisticAgent(LearningAgent):
     def best_action(self, state):
         """
         Returns the best action (the one with the maximum Q-value)
-        or one of the best actions, given a state.
+        or one of the best actions, given a state, being
+        optimistic in the face of uncertainty.
         """        
         # get all possible q-values for the state
         # (be optimistic in the face of uncertainty)

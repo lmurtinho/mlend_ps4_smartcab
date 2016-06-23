@@ -21,7 +21,6 @@ class BasicAgent(Agent):
         self.sum_time_left = 0 # sum of time left upon reaching destination over all trials
         self.n_penalties = 0 # number of penalties incurred
         self.last_penalty = 0 # last trial in which the agent incurred in a penalty
-        self.learn_rate = 1.0 # initial learning rate
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
@@ -47,7 +46,6 @@ class BasicAgent(Agent):
         
         # update time and learning rate
         self.time += 1
-        self.learn_rate = 1.0 / self.time
 
         # Update state
         self.state = (inputs['light'], inputs['oncoming'], inputs['left'],

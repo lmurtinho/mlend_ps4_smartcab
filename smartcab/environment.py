@@ -249,7 +249,7 @@ class Environment(object):
             self.step_data['action'] = action
             self.step_data['reward'] = reward
             self.trial_data['net_reward'] += reward
-            print "Environment.act(): Step data: {}".format(self.step_data)  # [debug]
+            # print "Environment.act(): Step data: {}".format(self.step_data)  # [debug]
 
         return reward
 

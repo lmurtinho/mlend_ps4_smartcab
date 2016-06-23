@@ -122,11 +122,7 @@ class Simulator(object):
             p_agent = self.env.primary_agent
             if self.quit:
                 break
-        return (p_agent.reward_sum, p_agent.disc_reward_sum, 
-                p_agent.n_dest_reached, p_agent.last_dest_fail, 
-                p_agent.sum_time_left, p_agent.n_penalties,
-                p_agent.last_penalty, len(p_agent.qvals))
-
+        
             # Collect/update metrics
             self.rep.collect('net_reward', trial, self.env.trial_data['net_reward'])  # total reward obtained in this trial
             self.rep.collect('avg_net_reward', trial, np.mean(self.rep.metrics['net_reward'].ydata[-self.avg_net_reward_window:]))  # rolling mean of reward
@@ -142,6 +138,11 @@ class Simulator(object):
 
         if self.live_plot:
             self.rep.show_plot()  # holds till user closes plot window
+        
+        return (p_agent.reward_sum, p_agent.disc_reward_sum, 
+                p_agent.n_dest_reached, p_agent.last_dest_fail, 
+                p_agent.sum_time_left, p_agent.n_penalties,
+                p_agent.last_penalty, len(p_agent.qvals))
 
     def render(self):
         # Clear screen
