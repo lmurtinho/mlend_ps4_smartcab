@@ -42,6 +42,17 @@ class LearningAgent(Agent):
         # return one of the best actions at random
         return random.choice(best_actions)        
 
+    def update_qvals(self, state, action, reward):
+        """
+        Updates the q-value associated with the (state, action) pair
+        """
+        # define the learning rate for the current time
+        learn_rate = 1.0 / self.time
+        
+        self.qvals[(self.state, action)] = \
+            (1 - learn_rate) * self.qvals.get((self.state, action), 0) + \
+            learn_rate * reward
+
     def update(self, t):
         # Gather inputs
         self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
@@ -50,11 +61,16 @@ class LearningAgent(Agent):
         
         # update time and learning rate
         self.time += 1
-        learn_rate = 1.0 / self.time
-
+        
+        ok_forward = (inputs['light'] == 'green')
+        ok_right = (inputs['light'] == 'green') or \
+            ((inputs['oncoming'] != 'left') and (inputs['left'] != 'forward'))
+        ok_left = all([inputs['light'] == 'green',
+                       inputs['oncoming'] != 'forward',
+                       inputs['oncoming'] != 'right'])
+        
         # Update state
-        self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
-                      self.next_waypoint)
+        self.state = (ok_forward, ok_right, ok_left, self.next_waypoint)
 
         # Pick the best known action
         action = self.best_action(self.state)
@@ -64,14 +80,11 @@ class LearningAgent(Agent):
         if reward < 0:
             self.n_penalties += 1
         self.reward_sum += reward
-        self.disc_reward_sum += reward / (self.time/10.0)
+        self.disc_reward_sum += reward / (self.time/100.0)
         
         # Update the q-value of the (state, action) pair
-        self.qvals[(self.state, action)] = \
-            (1 - learn_rate) * self.qvals.get((self.state, action), 0) + \
-            learn_rate * reward
-            
-
+        self.update_qvals(self.state, action, reward)        
+        
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
 
@@ -96,10 +109,10 @@ if __name__ == '__main__':
     results = []
     for i in range(100):
         sim_results = run()
-        results.append(run())
+        results.append(sim_results)
     df_results = pd.DataFrame(results)
     df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
                           'last_dest_fail', 'sum_time_left', 'n_penalties',
                           'last_penalty', 'len_qvals']
-    df_results.to_csv('original_agent_results.csv')
+    df_results.to_csv('final_agent_results.csv')
     print df_results
