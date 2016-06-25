@@ -3,7 +3,7 @@ from environment import Agent
 from planner import RoutePlanner
 
 class BasicAgent(Agent):
-    """An agent that learns to drive in the smartcab world."""
+    """A basic agent upon which to build learning agents."""
 
     def __init__(self, env):
         super(BasicAgent, self).__init__(env)  # sets self.env = env, state = None, next_waypoint = None, and a default color
@@ -29,7 +29,8 @@ class BasicAgent(Agent):
 
     def update_qvals(self, state, action, reward):
         """
-        Does nothing (in other agents will use reward to update 
+        Keeps track of visited (state, action) pairs. 
+        (in other agents will use reward to update 
         the mapping from (state, action) pairs to q-values)
         """
         self.qvals[(state, action)] = 0

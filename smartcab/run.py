@@ -31,4 +31,3 @@ def run_sims(n_sims, n_trials, agent):
     df_results.columns = ['n_dest_reached', 'last_dest_fail', 'sum_time_left', 
                           'n_penalties', 'last_penalty', 'len_qvals']
     return df_results
-

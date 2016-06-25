@@ -7,7 +7,7 @@ from learning_agent import LearningAgent
 class LearningRandomAgent(LearningAgent):
     """
     An agent that learns to drive in the smartcab world
-    but acts at random sometime.
+    but acts at random sometimes.
     """
 
     def __init__ (self, env, eps):
@@ -80,5 +80,6 @@ def several_random_changes(epses):
         df_results.columns = ['n_dest_reached', 'last_dest_fail', 
                               'sum_time_left', 'n_penalties',
                               'last_penalty', 'len_qvals']
+        df_results.to_csv("random_rate_{}_results.csv".format(eps))
         results[eps] = df_results
     return results

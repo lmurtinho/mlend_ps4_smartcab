@@ -4,7 +4,11 @@ from simulator import Simulator
 from learning_agent import LearningAgent
 
 class RateChangeAgent(LearningAgent):
-
+    """
+    An agent that learns to drive in the smartcab world
+    and whose learning rate can be tweaked.
+    """
+    
     def __init__ (self, env, mult):
         super(RateChangeAgent, self).__init__(env)
         self.mult = mult
@@ -53,5 +57,6 @@ def several_rate_changes(mults):
         df_results.columns = ['n_dest_reached', 'last_dest_fail', 
                               'sum_time_left', 'n_penalties',
                               'last_penalty', 'len_qvals']
+        df_results.to_csv("rate_change_{}_results.csv".format(mult))
         results[mult] = df_results
     return results
