@@ -91,12 +91,4 @@ def run():
 
 
 if __name__ == '__main__':
-    results = []
-    for i in range(100):
-        sim_results = run()
-        results.append(sim_results)
-    df_results = pd.DataFrame(results)
-    df_results.columns = ['n_dest_reached', 'last_dest_fail', 'sum_time_left',
-                          'n_penalties', 'last_penalty', 'len_qvals']
-    df_results.to_csv('final_agent_results.csv')
-    print df_results
+    run()
