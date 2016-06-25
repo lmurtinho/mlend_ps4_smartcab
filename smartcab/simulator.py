@@ -139,8 +139,7 @@ class Simulator(object):
         if self.live_plot:
             self.rep.show_plot()  # holds till user closes plot window
         
-        return (p_agent.reward_sum, p_agent.disc_reward_sum, 
-                p_agent.n_dest_reached, p_agent.last_dest_fail, 
+        return (p_agent.n_dest_reached, p_agent.last_dest_fail, 
                 p_agent.sum_time_left, p_agent.n_penalties,
                 p_agent.last_penalty, len(p_agent.qvals))
 

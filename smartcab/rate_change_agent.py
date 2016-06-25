@@ -20,8 +20,7 @@ class RateChangeAgent(LearningAgent):
             (1 - learn_rate) * self.qvals.get((self.state, action), 0) + \
             learn_rate * reward
 
-
-def run(mult):
+def run_rate_change(mult):
     """Run the agent for a finite number of trials."""
 
     # Set up environment and agent
@@ -37,18 +36,22 @@ def run(mult):
     return sim.run(n_trials=100)  # run for a specified number of trials
     # NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
 
-
-if __name__ == '__main__':
-    mults = [1, 0.5, 0.3, 0.1, 0.05, 0.03, 0.01, 0.005, 0.003, 0.001]
+def several_rate_changes(mults):
+    """
+    For each mult value in mults, runs a simulation
+    with a RateChangeAgent.
+    Returns a dict with dataframe results for the agent
+    for each mult value.
+    """
+    results = {}
     for mult in mults:
-        idx = mults.index(mult)
-        results = []
+        mult_results = []
         for i in range(100):
-            sim_results = run(mult)
-            results.append(sim_results)
-        df_results = pd.DataFrame(results)
-        df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
-                              'last_dest_fail', 'sum_time_left', 'n_penalties',
+            sim_results = run_rate_change(mult)
+            mult_results.append(sim_results)
+        df_results = pd.DataFrame(mult_results)
+        df_results.columns = ['n_dest_reached', 'last_dest_fail', 
+                              'sum_time_left', 'n_penalties',
                               'last_penalty', 'len_qvals']
-        df_results.to_csv('rate_change_agent_{}_results.csv'.format(idx))
-        print "done with agent {}".format(idx)
+        results[mult] = df_results
+    return results

@@ -1,8 +1,6 @@
-import pandas as pd
 import random
-from environment import Agent, Environment
+from environment import Agent
 from planner import RoutePlanner
-from simulator import Simulator
 
 class BasicAgent(Agent):
     """An agent that learns to drive in the smartcab world."""
@@ -14,8 +12,6 @@ class BasicAgent(Agent):
         self.qvals = {} # mapping (state, action) to q-values
         self.time = 0 # number of moves performed
         self.possible_actions = (None, 'forward', 'left', 'right')
-        self.reward_sum = 0 # sum of rewards over all trials in simulation
-        self.disc_reward_sum = 0 # discounted sum of rewards
         self.n_dest_reached = 0 # number of destinations reached
         self.last_dest_fail = 0 # last time agent failed to reach destination
         self.sum_time_left = 0 # sum of time left upon reaching destination over all trials
@@ -44,59 +40,22 @@ class BasicAgent(Agent):
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
         
-        # update time and learning rate
+        # update time
         self.time += 1
 
         # Update state
         self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
                       self.next_waypoint)
 
-        # Pick the best known action
+        # Pick an action
         action = self.best_action(self.state)
         
         # Execute action and get reward
         reward = self.env.act(self, action)
         if reward < 0:
             self.n_penalties += 1
-        self.reward_sum += reward
-        self.disc_reward_sum += reward / (1 + self.time/100.0)
         
         # Update the q-value of the (state, action) pair
         self.update_qvals(self.state, action, reward)
         
-        # with open('qvals_log.txt', 'w') as f:
-        #    for qval in self.qvals:
-        #        f.write("{}:{}\n".format(qval, self.qvals[qval]))
-        #print self.time
-
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
-
-
-def run():
-    """Run the agent for a finite number of trials."""
-
-    # Set up environment and agent
-    e = Environment()  # create environment (also adds some dummy traffic)
-    a = e.create_agent(BasicAgent)  # create agent
-    e.set_primary_agent(a, enforce_deadline=True)  # specify agent to track
-    # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
-
-    # Now simulate it
-    sim = Simulator(e, update_delay=0, display=False)  # create simulator (uses pygame when display=True, if available)
-    # NOTE: To speed up simulation, reduce update_delay and/or set display=False
-
-    return sim.run(n_trials=100)  # run for a specified number of trials
-    # NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
-
-
-if __name__ == '__main__':
-    results = []
-    for i in range(100):
-        sim_results = run()
-        results.append(sim_results)
-    df_results = pd.DataFrame(results)
-    df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
-                          'last_dest_fail', 'sum_time_left', 'n_penalties',
-                          'last_penalty', 'len_qvals']
-    df_results.to_csv('basic_agent_results.csv')
-    #print df_results

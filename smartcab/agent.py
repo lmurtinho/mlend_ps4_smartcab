@@ -14,17 +14,12 @@ class LearningAgent(Agent):
         self.qvals = {}
         self.time = 0
         self.possible_actions = (None, 'forward', 'left', 'right')
-        self.reward_sum = 0
-        self.disc_reward_sum = 0
-        self.n_dest_reached = 0
-        self.last_dest_fail = 0
-        self.sum_time_left = 0
         self.n_penalties = 0
-        self.last_penalty = 0
+        self.n_dest_reached = 0
+        self.sum_time_left = 0
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
-        # TODO: Prepare for a new trip; reset any variables here, if required
 
     def best_action(self, state):
         """
@@ -59,31 +54,21 @@ class LearningAgent(Agent):
         inputs = self.env.sense(self)
         deadline = self.env.get_deadline(self)
         
-        # update time and learning rate
+        # update time
         self.time += 1
-        
-        ok_forward = (inputs['light'] == 'green')
-        ok_right = (inputs['light'] == 'green') or \
-            ((inputs['oncoming'] != 'left') and (inputs['left'] != 'forward'))
-        ok_left = all([inputs['light'] == 'green',
-                       inputs['oncoming'] != 'forward',
-                       inputs['oncoming'] != 'right'])
-        
-        # Update state
-        self.state = (ok_forward, ok_right, ok_left, self.next_waypoint)
 
-        # Pick the best known action
+        # Update state
+        self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
+                      self.next_waypoint)
+
+        # Pick an action
         action = self.best_action(self.state)
         
         # Execute action and get reward
         reward = self.env.act(self, action)
-        if reward < 0:
-            self.n_penalties += 1
-        self.reward_sum += reward
-        self.disc_reward_sum += reward / (self.time/100.0)
         
         # Update the q-value of the (state, action) pair
-        self.update_qvals(self.state, action, reward)        
+        self.update_qvals(self.state, action, reward)       
         
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
@@ -98,7 +83,7 @@ def run():
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0, display=False)  # create simulator (uses pygame when display=True, if available)
+    sim = Simulator(e, update_delay=0.5, display=True)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
     return sim.run(n_trials=100)  # run for a specified number of trials
@@ -111,8 +96,7 @@ if __name__ == '__main__':
         sim_results = run()
         results.append(sim_results)
     df_results = pd.DataFrame(results)
-    df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
-                          'last_dest_fail', 'sum_time_left', 'n_penalties',
-                          'last_penalty', 'len_qvals']
+    df_results.columns = ['n_dest_reached', 'last_dest_fail', 'sum_time_left',
+                          'n_penalties', 'last_penalty', 'len_qvals']
     df_results.to_csv('final_agent_results.csv')
     print df_results

@@ -5,7 +5,10 @@ from simulator import Simulator
 from learning_agent import LearningAgent
 
 class LearningRandomAgent(LearningAgent):
-    """An optimistic agent that learns to drive in the smartcab world."""
+    """
+    An agent that learns to drive in the smartcab world
+    but acts at random sometime.
+    """
 
     def __init__ (self, env, eps):
         super(LearningRandomAgent, self).__init__(env)
@@ -31,8 +34,7 @@ class LearningRandomAgent(LearningAgent):
         
         else:
             # get all possible q-values for the state
-            # (be optimistic in the face of uncertainty)
-            all_qvals = {action: self.qvals.get((state, action), 100)
+            all_qvals = {action: self.qvals.get((state, action), 0)
                          for action in self.possible_actions}        
         
             # pick the actions that yield the largest q-value for the state
@@ -45,7 +47,7 @@ class LearningRandomAgent(LearningAgent):
         # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
 
 
-def run(eps):
+def run_random_change(eps):
     """Run the agent for a finite number of trials."""
 
     # Set up environment and agent
@@ -61,18 +63,22 @@ def run(eps):
     return sim.run(n_trials=100)  # run for a specified number of trials
     # NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
 
-
-if __name__ == '__main__':
-    epses = [1, 0.5, 0.3, 0.1, 0.05, 0.03, 0.01, 0.005, 0.003, 0.001]
+def several_random_changes(epses):
+    """
+    For each eps value in epses, runs a simulation
+    with a LearningRandomAgent.
+    Returns a dict with dataframe results for the agent
+    for each eps value.
+    """
+    results = {}
     for eps in epses:
-        idx = epses.index(eps)
-        results = []
+        eps_results = []
         for i in range(100):
-            sim_results = run(eps)
-            results.append(sim_results)
-        df_results = pd.DataFrame(results)
-        df_results.columns = ['reward_sum', 'disc_reward_sum', 'n_dest_reached',
-                              'last_dest_fail', 'sum_time_left', 'n_penalties',
+            sim_results = run_random_change(eps)
+            eps_results.append(sim_results)
+        df_results = pd.DataFrame(eps_results)
+        df_results.columns = ['n_dest_reached', 'last_dest_fail', 
+                              'sum_time_left', 'n_penalties',
                               'last_penalty', 'len_qvals']
-        df_results.to_csv('learning_random_agent_{}_results.csv'.format(idx))
-        print "done with agent {}".format(idx)
+        results[eps] = df_results
+    return results
