@@ -1,0 +1,395 @@
+Simulator.run(): Trial 0
+
+penalty!
+light: red, oncoming: None, left: None, waypoint: left
+visit number 3 to state
+action: left
+reward: -1.0
+
+
+penalty!
+light: red, oncoming: None, left: None, waypoint: left
+visit number 4 to state
+action: forward
+reward: -1.0
+
+
+penalty!
+light: green, oncoming: None, left: left, waypoint: forward
+visit number 1 to state
+action: left
+reward: -0.5
+
+
+penalty!
+light: red, oncoming: None, left: None, waypoint: right
+visit number 2 to state
+action: forward
+reward: -1.0
+
+
+penalty!
+light: green, oncoming: None, left: None, waypoint: forward
+visit number 1 to state
+action: left
+reward: -0.5
+
+
+penalty!
+light: green, oncoming: None, left: None, waypoint: forward
+visit number 3 to state
+action: right
+reward: -0.5
+
+
+penalty!
+light: red, oncoming: None, left: None, waypoint: forward
+visit number 2 to state
+action: left
+reward: -1.0
+
+
+penalty!
+light: red, oncoming: None, left: None, waypoint: forward
+visit number 4 to state
+action: forward
+reward: -1.0
+
+
+penalty!
+light: red, oncoming: None, left: None, waypoint: forward
+visit number 6 to state
+action: right
+reward: -0.5
+
+Simulator.run(): Trial 1
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 2
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 3
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 4
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 5
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 6
+
+penalty!
+light: green, oncoming: None, left: left, waypoint: left
+visit number 1 to state
+action: right
+reward: -0.5
+
+
+penalty!
+light: red, oncoming: None, left: None, waypoint: left
+visit number 11 to state
+action: right
+reward: -0.5
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 7
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 8
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 9
+
+penalty!
+light: green, oncoming: None, left: right, waypoint: forward
+visit number 1 to state
+action: left
+reward: -0.5
+
+
+penalty!
+light: red, oncoming: None, left: right, waypoint: forward
+visit number 1 to state
+action: forward
+reward: -1.0
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 10
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 11
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 12
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 13
+
+penalty!
+light: green, oncoming: None, left: left, waypoint: right
+visit number 1 to state
+action: left
+reward: -0.5
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 14
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 15
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 16
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 17
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 18
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 19
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 20
+
+penalty!
+light: red, oncoming: forward, left: None, waypoint: forward
+visit number 1 to state
+action: right
+reward: -0.5
+
+
+penalty!
+light: red, oncoming: left, left: None, waypoint: left
+visit number 2 to state
+action: left
+reward: -1.0
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 21
+
+penalty!
+light: red, oncoming: None, left: left, waypoint: forward
+visit number 1 to state
+action: forward
+reward: -1.0
+
+
+penalty!
+light: green, oncoming: None, left: left, waypoint: forward
+visit number 2 to state
+action: right
+reward: -0.5
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 22
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 23
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 24
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 25
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 26
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 27
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 28
+
+penalty!
+light: red, oncoming: None, left: left, waypoint: left
+visit number 1 to state
+action: forward
+reward: -1.0
+
+
+penalty!
+light: green, oncoming: None, left: left, waypoint: left
+visit number 3 to state
+action: forward
+reward: -0.5
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 29
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 30
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 31
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 32
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 33
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 34
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 35
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 36
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 37
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 38
+
+penalty!
+light: red, oncoming: left, left: None, waypoint: forward
+visit number 1 to state
+action: left
+reward: -1.0
+
+
+penalty!
+light: red, oncoming: left, left: None, waypoint: forward
+visit number 2 to state
+action: forward
+reward: -1.0
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 39
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 40
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 41
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 42
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 43
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 44
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 45
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 46
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 47
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 48
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 49
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 50
+
+penalty!
+light: red, oncoming: forward, left: None, waypoint: forward
+visit number 2 to state
+action: left
+reward: -1.0
+
+
+penalty!
+light: red, oncoming: forward, left: None, waypoint: forward
+visit number 3 to state
+action: forward
+reward: -1.0
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 51
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 52
+
+penalty!
+light: red, oncoming: forward, left: None, waypoint: right
+visit number 1 to state
+action: left
+reward: -1.0
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 53
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 54
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 55
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 56
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 57
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 58
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 59
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 60
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 61
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 62
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 63
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 64
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 65
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 66
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 67
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 68
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 69
+
+penalty!
+light: green, oncoming: forward, left: None, waypoint: left
+visit number 1 to state
+action: left
+reward: -1.0
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 70
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 71
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 72
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 73
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 74
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 75
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 76
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 77
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 78
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 79
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 80
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 81
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 82
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 83
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 84
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 85
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 86
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 87
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 88
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 89
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 90
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 91
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 92
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 93
+
+penalty!
+light: red, oncoming: None, left: left, waypoint: forward
+visit number 3 to state
+action: right
+reward: -0.5
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 94
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 95
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 96
+
+penalty!
+light: green, oncoming: left, left: left, waypoint: forward
+visit number 1 to state
+action: right
+reward: -0.5
+
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 97
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 98
+Environment.act(): Primary agent has reached destination!
+Simulator.run(): Trial 99
+Environment.act(): Primary agent has reached destination!

@@ -63,7 +63,7 @@ def run_random_change(eps):
     return sim.run(n_trials=100)  # run for a specified number of trials
     # NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
 
-def several_random_changes(epses):
+def several_random_changes(epses, folder):
     """
     For each eps value in epses, runs a simulation
     with a LearningRandomAgent.
@@ -80,6 +80,6 @@ def several_random_changes(epses):
         df_results.columns = ['n_dest_reached', 'last_dest_fail', 
                               'sum_time_left', 'n_penalties',
                               'last_penalty', 'len_qvals']
-        df_results.to_csv("random_rate_{}_results.csv".format(eps))
+        df_results.to_csv("{}/random_rate_{}_results.csv".format(folder, eps))
         results[eps] = df_results
     return results

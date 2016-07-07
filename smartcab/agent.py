@@ -17,6 +17,11 @@ class LearningAgent(Agent):
         self.n_penalties = 0
         self.n_dest_reached = 0
         self.sum_time_left = 0
+        self.last_dest_fail = 0 # last time agent failed to reach destination
+        self.sum_time_left = 0 # sum of time left upon reaching destination over all trials
+        self.n_penalties = 0 # number of penalties incurred
+        self.last_penalty = 0 # last trial in which the agent incurred in a penalty
+        self.states = {} # number of times a state has been visited
 
     def reset(self, destination=None):
         self.planner.route_to(destination)
@@ -60,12 +65,21 @@ class LearningAgent(Agent):
         # Update state
         self.state = (inputs['light'], inputs['oncoming'], inputs['left'],
                       self.next_waypoint)
-
+        
+        self.states[self.state] = self.states.get(self.state, 0) + 1
+        
         # Pick an action
         action = self.best_action(self.state)
         
         # Execute action and get reward
         reward = self.env.act(self, action)
+        
+        if reward < 0:
+            print "\npenalty!"
+            print "light: {0}, oncoming: {1}, left: {2}, waypoint: {3}".format(*self.state)
+            print "visit number {} to state".format(self.states[self.state])
+            print "action: {}".format(action)
+            print "reward: {}\n".format(reward)
         
         # Update the q-value of the (state, action) pair
         self.update_qvals(self.state, action, reward)       
@@ -83,7 +97,7 @@ def run():
     # NOTE: You can set enforce_deadline=False while debugging to allow longer trials
 
     # Now simulate it
-    sim = Simulator(e, update_delay=0.5, display=True)  # create simulator (uses pygame when display=True, if available)
+    sim = Simulator(e, update_delay=0, display=False)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
     return sim.run(n_trials=100)  # run for a specified number of trials

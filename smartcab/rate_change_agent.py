@@ -40,7 +40,7 @@ def run_rate_change(mult):
     return sim.run(n_trials=100)  # run for a specified number of trials
     # NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
 
-def several_rate_changes(mults):
+def several_rate_changes(mults, folder):
     """
     For each mult value in mults, runs a simulation
     with a RateChangeAgent.
@@ -57,6 +57,6 @@ def several_rate_changes(mults):
         df_results.columns = ['n_dest_reached', 'last_dest_fail', 
                               'sum_time_left', 'n_penalties',
                               'last_penalty', 'len_qvals']
-        df_results.to_csv("rate_change_{}_results.csv".format(mult))
+        df_results.to_csv("{}/rate_change_{}_results.csv".format(folder, mult))
         results[mult] = df_results
     return results

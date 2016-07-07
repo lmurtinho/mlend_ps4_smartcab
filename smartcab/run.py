@@ -15,7 +15,7 @@ def run_sim(n_trials, agent):
     sim = Simulator(e, update_delay=0, display=False)  # create simulator (uses pygame when display=True, if available)
     # NOTE: To speed up simulation, reduce update_delay and/or set display=False
 
-    return sim.run(n_trials=100)  # run for a specified number of trials
+    return sim.run(n_trials=n_trials)  # run for a specified number of trials
     # NOTE: To quit midway, press Esc or close pygame window, or hit Ctrl+C on the command-line
 
 def run_sims(n_sims, n_trials, agent):
