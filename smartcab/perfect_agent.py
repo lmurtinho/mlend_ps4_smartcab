@@ -24,6 +24,4 @@ class PerfectAgent(BasicAgent):
         elif action == 'left' and (oncoming == 'forward' or oncoming == 'right'):
             action = None
         
-        return action            
-
-        # print "LearningAgent.update(): deadline = {}, inputs = {}, action = {}, reward = {}".format(deadline, inputs, action, reward)  # [debug]
+        return action
