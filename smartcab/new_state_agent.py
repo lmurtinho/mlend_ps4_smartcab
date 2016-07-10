@@ -7,14 +7,13 @@ class NewStateAgent(LearningAgent):
         # Gather inputs
         self.next_waypoint = self.planner.next_waypoint()  # from route planner, also displayed by simulator
         inputs = self.env.sense(self)
-        deadline = self.env.get_deadline(self)
-        
+
         # update time and learning rate
         self.time += 1
         
         ok_forward = (inputs['light'] == 'green')
         ok_right = (inputs['light'] == 'green') or \
-            ((inputs['oncoming'] != 'left') and (inputs['left'] != 'forward'))
+            (inputs['left'] != 'forward')
         ok_left = all([inputs['light'] == 'green',
                        inputs['oncoming'] != 'forward',
                        inputs['oncoming'] != 'right'])

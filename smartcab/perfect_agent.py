@@ -13,12 +13,10 @@ class PerfectAgent(BasicAgent):
         # retrieve best action        
         action = waypoint
 
-        # On a red light, the agent can only turn right, and even so only if:
-        # - no oncoming traffic is going left
-        # - no traffic from the left is going forward
+        # On a red light, the agent can only turn right, 
+        # and only if no left traffic is going forward
         if light == 'red':
-            if any([action != 'right', oncoming == 'left', 
-                    left == 'forward']):
+            if action != 'right' or left == 'forward':
                 action = None
 
         # On a green light, the agent cannot turn left if there is

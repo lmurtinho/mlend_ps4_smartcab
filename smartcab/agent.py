@@ -74,6 +74,8 @@ class LearningAgent(Agent):
         # Execute action and get reward
         reward = self.env.act(self, action)
         
+        
+        # print info about penalties
         if reward < 0:
             print "\npenalty!"
             print "light: {0}, oncoming: {1}, left: {2}, waypoint: {3}".format(*self.state)
